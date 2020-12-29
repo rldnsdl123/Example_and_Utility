@@ -9,31 +9,43 @@ using System.Windows.Input;
 
 namespace DependencyPropertyTest
 {
-    public class BindingProperty:DependencyObject
+    public class BindingProperty : DependencyObject
     {
         MainWindow _Main;
 
+        public BindingProperty(MainWindow mainWindow)
+        {
+            _Main = mainWindow;
+            _Main.Check.Checked += Check_Checked;
+            _Main.Check.Unchecked+= Check_Checked;
+        }
+
+
+
         public static readonly DependencyProperty IsSetProperty =
-           DependencyProperty.Register("IsSet", typeof(bool), typeof(MainWindow),
-                new FrameworkPropertyMetadata(OnIsSetChange));
+              DependencyProperty.Register("IsSet", typeof(bool), typeof(BindingProperty),
+            new FrameworkPropertyMetadata(new PropertyChangedCallback(OnIsSetChange)));
 
         private static void OnIsSetChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-
+            BindingProperty window = d as BindingProperty;
+            if (window._Main.Check.IsChecked == true)
+                window._Main.dependency.Text = "Dependency Property 연습~";
+            else
+                window._Main.dependency.Text = "";
         }
 
-        //public ICommand IsSetCmd { get; set; }
-        
         public bool IsSet
         {
             get => (bool)GetValue(IsSetProperty);
             set { SetValue(IsSetProperty, value); }
         }
 
-        public BindingProperty(MainWindow mainWindow)
+
+        private void Check_Checked(object sender, RoutedEventArgs e)
         {
-            _Main = mainWindow;
-            //IsSetCmd = new RelayCommand(() => _Main.Check.IsChecked = true);
+            IsSet = (bool)_Main.Check.IsChecked;
         }
+        
     }
 }
