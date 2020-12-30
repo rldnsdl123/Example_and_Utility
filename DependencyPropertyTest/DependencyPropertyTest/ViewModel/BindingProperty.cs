@@ -30,9 +30,9 @@ namespace DependencyPropertyTest
         {
             BindingProperty window = d as BindingProperty;
             if (window._Main.Check.IsChecked == true)
-                window._Main.dependency.Text = "Dependency Property 연습~";
+                window._Main.dependency.Text = "CheckBox True일때 Textbox의 Text바꾸기~";
             else
-                window._Main.dependency.Text = "";
+                window._Main.dependency.Text = "CheckBox False일때 Textbox의 Text바꾸기~";
         }
 
         public bool IsSet
