@@ -20,6 +20,21 @@ namespace WPFAnimationSample
     /// </summary>
     public partial class MainWindow : Window
     {
+        private string _DataTriggerText;
+        public string DataTriggerText
+        {
+            get => _DataTriggerText;
+            set
+            {
+                if (_DataTriggerText == value)
+                    return;
+
+                _DataTriggerText = value;
+            }
+        }
+
+
+
         public MainWindow()
         {
             InitializeComponent();
