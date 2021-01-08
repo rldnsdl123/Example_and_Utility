@@ -67,7 +67,7 @@
                                         </BeginStoryboard>
                                     </Trigger.ExitActions>
                                 </Trigger>
-                                
+
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
                     </Setter.Value>
@@ -79,10 +79,10 @@
                 <Style.Triggers>
                     <Trigger Property="TextBox.IsFocused" Value="True">
                         <Setter Property="TextBox.BorderThickness" Value="3"/>
-                    </Trigger>        
+                    </Trigger>
                 </Style.Triggers>
             </Style>
-            
+
             <!-- Textbox Event Trigger-->
             <!-- 마우스가 textbox에 들어가면 회색으로 바뀜-->
             <Storyboard x:Key="MouseEnterAnimation">
@@ -97,7 +97,8 @@
                     To="White" Duration="0:0:0.1"
                     />
             </Storyboard>
-            
+
+            <!--Mouse가 textbox에 들어오고 나갈때 발생-->
             <Style x:Key="MouseEnterEventStyle" TargetType="TextBox">
                 <Style.Triggers>
                     <EventTrigger RoutedEvent="TextBox.MouseEnter">
@@ -109,9 +110,47 @@
 
                 </Style.Triggers>
             </Style>
-            
 
+            <!-- textbox내 data를 보고 value와 같으면 setter값으로 set-->
+            <Style x:Key="DataTriggerStyle" TargetType="TextBox">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource Self}}" Value="Bad">
+                        <Setter Property="TextBox.Foreground" Value="Red" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
             
+            <!--MultiDataTrigger -->
+            <Style x:Key="MultiTrigger" TargetType="TextBox">
+                <Style.Triggers>
+                    <MultiTrigger>
+                        <MultiTrigger.Conditions>
+                            <Condition Property="TextBox.Text" Value="Good"/>
+                            <Condition Property="TextBox.IsMouseOver" Value="True"/>
+                        </MultiTrigger.Conditions>
+                        <Setter Property="TextBox.Foreground" Value="LimeGreen"/>
+                        <Setter Property="TextBox.FontWeight" Value="Bold"/>
+                    </MultiTrigger>
+                </Style.Triggers>
+            </Style>
+            
+            <!--MultiDataTrigger 2개의 조건을 확인하고 set-->
+            <Style x:Key="MultiDataTrigger" TargetType="TextBox">
+                <Style.Triggers>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding Text, RelativeSource={RelativeSource Self}}" Value="Bad"/>
+                            <!-- AND -->
+                            <Condition Binding="{Binding Tag, RelativeSource={RelativeSource Self}}" Value="Bad"/>
+                        </MultiDataTrigger.Conditions>
+                        <Setter Property="TextBox.Foreground" Value="Red"/>
+                        <Setter Property="TextBox.FontWeight" Value="Bold"/>
+                    </MultiDataTrigger>
+                </Style.Triggers>
+            </Style>
+
+
+
 
         </ResourceDictionary>
     </Window.Resources>
@@ -129,7 +168,7 @@
         </Grid.ColumnDefinitions>
 
         <GroupBox BorderBrush="Black" BorderThickness="2" Header="BtnAnimation" Grid.ColumnSpan="2" Grid.Row="0">
-            
+
             <StackPanel Orientation="Horizontal" Margin="10">
                 <Button x:Name="ShadowBtn" Content="Shadow" Style="{StaticResource BasicShadowBtnStyle}" Margin="0 0 20 0"/>
                 <Button x:Name="AniBtn" Content="Animation" Style="{StaticResource BasicAnimationBtnStyle}" Margin="0 0 20 0"/>
@@ -172,17 +211,51 @@
         <Label Content="PropertyTrigger" Grid.Column="0" Grid.Row="1" 
                VerticalAlignment="Center" Width="100" HorizontalAlignment="Left"
                Height="30"/>
+        <TextBox    Grid.Row="1" Width="250" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left"
+                    BorderThickness="0"
+                    Text="Textblock에 Focus가 가면 thickness가 바뀜"/>
         <TextBox Grid.Column="0" Grid.Row="1" Width="100" Height="30" Style="{StaticResource TextblockPropertyTrigger}"/>
 
+        
         <Label Content="EventTrigger" Grid.Column="0" Grid.Row="2" 
                VerticalAlignment="Center" Width="100" HorizontalAlignment="Left"
                Height="30"/>
+        <TextBox    Grid.Row="2" Width="300" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left"
+                    BorderThickness="0"
+                    Text="Textblock에 Mouse가 들어오거나 나가면 바뀜"/>
         <TextBox Grid.Column="0" Grid.Row="2" Width="100" Height="30" Style="{StaticResource MouseEnterEventStyle}"/>
+
+        
         
         <Label Content="DataTrigger" Grid.Column="1" Grid.Row="1" 
                VerticalAlignment="Center" Width="100" HorizontalAlignment="Left"
                Height="30"/>
-        <TextBox Grid.Column="1" Grid.Row="1" Width="100" Height="30" Style="{StaticResource MouseEnterEventStyle}"/>
+        <TextBox    Grid.Row="1" Grid.Column="1" Width="300" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left"
+                    BorderThickness="0"
+                    Text="Textblock의 Text가 Bad이면 foreground가 빨간색으로 바뀜"/>
+        <TextBox Grid.Column="1" Grid.Row="1" Width="100" Height="30" Style="{StaticResource DataTriggerStyle}"/>
+
+        <Label Content="MultiTrigger" Grid.Column="1" Grid.Row="2" 
+               VerticalAlignment="Center" Width="100" HorizontalAlignment="Left"
+               Height="30"/>
+        <TextBox    Grid.Row="2" Grid.Column="1" Width="400" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left"
+                    BorderThickness="0"
+                    Text="Textblock의 Text가 Bad이고 마우스가 Textbox안에 있으변 바뀜"/>
+        <TextBox Grid.Column="1" Grid.Row="2" Width="100" Height="30" Style="{StaticResource MultiTrigger}"/>
+
         
+        
+        
+        
+        
+        <Label Content="MultiDataTrigger" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2"
+               VerticalAlignment="Center" Width="100" HorizontalAlignment="Left"
+               Height="30"/>
+        <TextBox    Grid.Row="3" Grid.ColumnSpan="2" Width="500" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left"
+                    BorderThickness="0"
+                    Text="Textblock의 Tag가 Bad이고 Textblock의 text가 Bad이면 foreground가 빨간색으로 바뀜"/>
+        <TextBox Grid.Column="0" Grid.Row="3" Width="100" Height="30" Tag="Bad"
+                 Style="{StaticResource MultiDataTrigger}"/>
+
     </Grid>
 </Window>
