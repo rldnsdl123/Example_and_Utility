@@ -16,6 +16,7 @@ namespace ManageSQL
         private string _DataSource;
         private DB _DB;
         private eConnectState _Connstate;
+        private string _QueryText;
 
         public string UserId
         {
@@ -73,19 +74,44 @@ namespace ManageSQL
                 OnPropertyChanged(nameof(ConnState));
             }
         }
+        public string QueryText
+        {
+            get => _QueryText;
+            set
+            {
+                if (_QueryText == value)
+                    return;
+
+                _QueryText = value;
+                OnPropertyChanged(nameof(QueryText));
+            }
+        }
 
         public ICommand BtnConnect { get; set; }
-
+        public ICommand BtnQueryExecute { get; set; }
+        public ICommand BtnGetTable { get; set; }
         public MainViewHandler()
         {
             _DB = new DB();
             BtnConnect = new RelayCommand(DBConnectClick);
+            BtnQueryExecute = new RelayCommand(ExecuteQuery);
+            BtnGetTable = new RelayCommand(GetTable);
 
             _UserId = "cim";
             _Password = "2230";
             _DataSource = "localhost";
             _InitialCatalog = "TestDB";
+            _QueryText = "Query문을 입력해주세요";
+        }
 
+        private void GetTable()
+        {
+            _DB.GetColumnName();
+        }
+
+        private void ExecuteQuery()
+        {
+            _DB.Execute(_QueryText);
         }
 
         private void DBConnectClick()
