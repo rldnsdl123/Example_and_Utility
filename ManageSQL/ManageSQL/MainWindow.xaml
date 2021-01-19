@@ -81,7 +81,13 @@
                  />
             </TabItem>
             <TabItem Header="Table">
-                
+                <ListView DataContext="{Binding datatable}" 
+                          x:Name="tableitems"
+                    
+                    />
+
+
+
             </TabItem>
         </TabControl>
 

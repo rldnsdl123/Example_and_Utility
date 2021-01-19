@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -59,10 +60,11 @@ namespace ManageSQL
             _cmd.CommandText = queryText;
             _cmd.Connection = _Conn;
             reader = _cmd.ExecuteReader();
-            
+            reader.Close();
+
         }
 
-        public void GetColumnName()
+        public List<string> GetColumnName()
         {
             // 우선 TEST테이블에 있는 Column name을 가져옴
             string qry = $"SELECT column_name from information_schema.columns WHERE table_name='TEST'";
@@ -78,7 +80,49 @@ namespace ManageSQL
             {
                 colNames.Add(reader.GetString(0));
             }
+            reader.Close();
+            return colNames;
+        }
+        public int GetColumnCount()
+        {
+            // 우선 TEST테이블에 있는 Column name을 가져옴
+            string qry = $"SELECT COUNT(*) FROM information_schema.columns WHERE table_name='TEST'";
 
+            SqlDataReader reader;
+
+            _cmd.CommandText = qry;
+            _cmd.Connection = _Conn;
+            reader = _cmd.ExecuteReader();
+
+            int colCount = 0;
+
+            while (reader.Read())
+            {
+                colCount = reader.GetInt32(0);
+            }
+            reader.Close();
+            return colCount;
+        }
+        public DataTable GetTable()
+        {
+            string qry = $"select * from Test";
+            int columnCount = GetColumnCount();
+
+            DataTable dt = new DataTable();
+            DataColumn dc = new DataColumn();
+
+            dt.Clear();
+            dt.Columns.Clear();
+
+            for(int i=0;i<columnCount;i++)
+            {
+                dt.Columns.Add(GetColumnName()[i]);
+            }
+            _cmd.CommandText = qry;
+            SqlDataAdapter adapt = new SqlDataAdapter(qry, _Conn);
+            adapt.Fill(dt);
+
+            return dt;
         }
     }
 }

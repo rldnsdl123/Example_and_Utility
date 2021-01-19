@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -90,6 +93,7 @@ namespace ManageSQL
         public ICommand BtnConnect { get; set; }
         public ICommand BtnQueryExecute { get; set; }
         public ICommand BtnGetTable { get; set; }
+
         public MainViewHandler()
         {
             _DB = new DB();
@@ -102,11 +106,19 @@ namespace ManageSQL
             _DataSource = "localhost";
             _InitialCatalog = "TestDB";
             _QueryText = "Query문을 입력해주세요";
+
         }
 
+
+        public DataTable datatable { get; set; }
+                
         private void GetTable()
         {
-            _DB.GetColumnName();
+            //_DB.GetColumnName();
+            int columnCount = _DB.GetColumnCount();
+
+            datatable = _DB.GetTable();
+
         }
 
         private void ExecuteQuery()
