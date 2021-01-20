@@ -128,7 +128,7 @@ namespace ManageSQL
             _Password = "2230";
             _DataSource = "localhost";
             _InitialCatalog = "TestDB";
-            _QueryText = "Query문을 입력해주세요";
+            _QueryText = "DB와 연결해주세요";
             ConnState = eConnectState.DisConnect;
         }
 
@@ -145,7 +145,7 @@ namespace ManageSQL
 
             set
             {
-                if (_View == null)
+                if (value == null)
                 {
                     QueryText = "Table명이 잘못되었습니다";
                     return;
@@ -173,8 +173,26 @@ namespace ManageSQL
                 return;
             }
             _Executeret =_DB.Execute(_QueryText);
-            if (_Executeret != eExecuteResult.Sucess)
+
+            // select, delete 구문은 결과를 바로 보여줄 수 있는대 
+            // update insert 다른 쿼리문은 수정이 필요함 table명을 못가져옴ㅋㅋㅋ
+            string tablename = FindTableName(_QueryText);
+            View = _DB.GetDataViewTable(tablename);
+
+            if (_Executeret == eExecuteResult.Sucess)
+            {
+                QueryText = "Execute Sucess!";
+            }
+            else
                 QueryText = "쿼리문을 수정해주세요";
+        }
+
+        private string FindTableName(string queryText)
+        {
+            int tableNameIndex = _QueryText.IndexOf("from");
+            string tb = _QueryText.Substring(tableNameIndex + 5);
+            string[] sp = tb.Split();
+            return sp[0];
         }
 
         private void DBConnectClick()
@@ -182,7 +200,10 @@ namespace ManageSQL
             if (ConnState == eConnectState.Connect)
                 ConnState = _DB.DisConnect(ConnState);
             else
-                ConnState=_DB.Connect(_UserId,_Password,InitialCatalog,_DataSource);
+            {
+                ConnState = _DB.Connect(_UserId, _Password, InitialCatalog, _DataSource);
+                QueryText = "쿼리문을 입력해주세요";
+            }
         }
     }
 }

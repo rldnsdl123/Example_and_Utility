@@ -94,8 +94,8 @@
             </TabItem>
         </TabControl>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="2" Margin="26 0 26 0">
-            <Button Width="80" Height="50" VerticalAlignment="Center" 
+        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="2" Margin="26 0 25 0">
+            <Button Width="70" Height="50" VerticalAlignment="Center"
                     Command="{Binding BtnConnect}"
                     >
                 <Button.Style>
@@ -112,13 +112,17 @@
                 </Button.Style>
             </Button>
 
-            <Button Width="80" Height="50" VerticalAlignment="Center" Margin="20 0 0 0"
+            <Button Width="70" Height="50" VerticalAlignment="Center" Margin="18 0 0 0"
                     Content="Execute&#10; Query"
                     Command="{Binding BtnQueryExecute}"
                     />
-            <Button Width="80" Height="50" VerticalAlignment="Center" Margin="20 0 0 0"
+            <Button Width="70" Height="50" VerticalAlignment="Center" Margin="18 0 0 0"
                     Content="GetTable"
                     Command="{Binding BtnGetTable}"
+                    />
+            <Button Width="68" Height="50" VerticalAlignment="Center" Margin="18 0 0 0"
+                    Content="GetTable"
+                    Command="{Binding }"
                     />
         </StackPanel>
     </Grid>

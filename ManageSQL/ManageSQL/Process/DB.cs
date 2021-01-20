@@ -98,6 +98,7 @@ namespace ManageSQL
             if (string.IsNullOrEmpty(queryText))
                 return eExecuteResult.QueryError;
             queryText.Trim().Replace(Environment.NewLine, string.Empty);
+
             try
             {
                 SqlDataReader reader;
@@ -115,7 +116,7 @@ namespace ManageSQL
             }
         }
 
-        
+
         public DataView GetDataViewTable(string tbName)
         {
             if (tbName == null)
