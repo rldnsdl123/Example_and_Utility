@@ -35,39 +35,14 @@ namespace ManageSQL
             }
             catch(Exception e)
             {
-                return eConnectState.NotConnect;
+                return eConnectState.DisConnect;
             }
         }
 
-        public eConnectState DisConnect(eConnectState connState)
-        {
-            if (connState == eConnectState.Connect)
-            {
-                _Conn.Close();
-                return eConnectState.NotConnect;
-            }
-
-            return connState;
-        }
-
-        public void Execute(string queryText)
-        {
-            if (string.IsNullOrEmpty(queryText))
-                return;
-
-            SqlDataReader reader;
-
-            _cmd.CommandText = queryText;
-            _cmd.Connection = _Conn;
-            reader = _cmd.ExecuteReader();
-            reader.Close();
-
-        }
-
-        public List<string> GetColumnName()
+        private List<string> GetColumnName(string tbName)
         {
             // 우선 TEST테이블에 있는 Column name을 가져옴
-            string qry = $"SELECT column_name from information_schema.columns WHERE table_name='TEST'";
+            string qry = string.Format("SELECT column_name from information_schema.columns WHERE table_name='{0}'", tbName);
 
             SqlDataReader reader;
 
@@ -76,17 +51,20 @@ namespace ManageSQL
             reader = _cmd.ExecuteReader();
             List<string> colNames = new List<string>();
 
-            while(reader.Read())
+            while (reader.Read())
             {
                 colNames.Add(reader.GetString(0));
             }
             reader.Close();
             return colNames;
         }
-        public int GetColumnCount()
+        private int GetColumnCount(string tbName)
         {
-            // 우선 TEST테이블에 있는 Column name을 가져옴
-            string qry = $"SELECT COUNT(*) FROM information_schema.columns WHERE table_name='TEST'";
+            if (_Conn == null)
+                return 0;
+
+            // 우선 테이블에 있는 Column name을 가져옴
+            string qry = string.Format("SELECT COUNT(*) FROM information_schema.columns WHERE table_name='{0}'", tbName);
 
             SqlDataReader reader;
 
@@ -103,26 +81,62 @@ namespace ManageSQL
             reader.Close();
             return colCount;
         }
-        public DataTable GetTable()
+
+
+        public eConnectState DisConnect(eConnectState connState)
         {
-            string qry = $"select * from Test";
-            int columnCount = GetColumnCount();
+            if (connState == eConnectState.Connect)
+            {
+                _Conn.Close();
+                return eConnectState.DisConnect;
+            }
+            return connState;
+        }
+
+        public eExecuteResult Execute(string queryText)
+        {
+            if (string.IsNullOrEmpty(queryText))
+                return eExecuteResult.QueryError;
+            queryText.Trim().Replace(Environment.NewLine, string.Empty);
+            try
+            {
+                SqlDataReader reader;
+
+                _cmd.CommandText = queryText;
+                _cmd.Connection = _Conn;
+
+                reader = _cmd.ExecuteReader();
+                reader.Close();
+                return eExecuteResult.Sucess;
+            }
+            catch(Exception e)
+            {
+                return eExecuteResult.QueryError;
+            }
+        }
+
+        
+        public DataView GetDataViewTable(string tbName)
+        {
+            if (tbName == null)
+                return null;
+            int columnCount = GetColumnCount(tbName);
+            string qry = string.Format("select * from {0}", tbName);
 
             DataTable dt = new DataTable();
-            DataColumn dc = new DataColumn();
 
             dt.Clear();
             dt.Columns.Clear();
 
-            for(int i=0;i<columnCount;i++)
+            for (int i = 0; i < columnCount; i++)
             {
-                dt.Columns.Add(GetColumnName()[i]);
+                dt.Columns.Add(GetColumnName(tbName)[i]);
             }
-            _cmd.CommandText = qry;
+
             SqlDataAdapter adapt = new SqlDataAdapter(qry, _Conn);
             adapt.Fill(dt);
 
-            return dt;
+            return dt.AsDataView();
         }
     }
 }

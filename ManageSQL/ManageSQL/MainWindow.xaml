@@ -12,7 +12,7 @@
                 <Setter Property="HorizontalContentAlignment" Value="Left"/>
                 <Setter Property="VerticalContentAlignment" Value="Center"/>
                 <Setter Property="Width" Value="150"/>
-                <Setter Property="Height" Value="50"/>
+                <Setter Property="Height" Value="40"/>
                 <Setter Property="FontSize" Value="20"/>
                 <Setter Property="FontWeight" Value="Bold"/>
             </Style>
@@ -21,7 +21,7 @@
                 <Setter Property="HorizontalContentAlignment" Value="Center"/>
                 <Setter Property="VerticalContentAlignment" Value="Center"/>
                 <Setter Property="Width" Value="150"/>
-                <Setter Property="Height" Value="50"/>
+                <Setter Property="Height" Value="40"/>
                 <Setter Property="FontSize" Value="20"/>
                 <Setter Property="Foreground" Value="LightGray"/>
             </Style>
@@ -53,6 +53,9 @@
             
         <Label Content="InitialCatalog" ToolTip="사용하려는 Database"
                Style="{StaticResource LabelStyle}"/>
+
+        <Label Content="TableName" ToolTip="가져오고싶은 Table명"
+               Style="{StaticResource LabelStyle}"/>
         </StackPanel>
 
         <StackPanel Grid.Column="1" Margin="0 0 10 0">
@@ -72,21 +75,21 @@
                      x:Name="Database"
                      Text="{Binding InitialCatalog}"
                      />
+            <TextBox Style="{StaticResource TextBoxStyle}"
+                     x:Name="TableName"
+                     Text="{Binding TableName}"
+                     />
         </StackPanel>
 
         <TabControl Grid.Row="1" Grid.ColumnSpan="2" Margin="26 0 26 0">
             <TabItem Header="Query">
                 <TextBox Grid.Row="1" Grid.ColumnSpan="2" BorderBrush="black"
-                 Text="{Binding QueryText}" 
+                         AcceptsTab="True" AcceptsReturn="True" TextWrapping="WrapWithOverflow"
+                         Text="{Binding QueryText}" 
                  />
             </TabItem>
             <TabItem Header="Table">
-                <ListView DataContext="{Binding datatable}" 
-                          x:Name="tableitems"
-                    
-                    />
-
-
+                <DataGrid x:Name="grd" ItemsSource="{Binding View}"/>
 
             </TabItem>
         </TabControl>

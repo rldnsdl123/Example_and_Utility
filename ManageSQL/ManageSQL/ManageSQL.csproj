@@ -66,6 +66,7 @@
     <Compile Include="Base\BasePropertyChange.cs" />
     <Compile Include="define\ConnectState.cs" />
     <Compile Include="Base\RelayCommand.cs" />
+    <Compile Include="define\ExecuteResult.cs" />
     <Compile Include="Handler\MainViewHandler.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

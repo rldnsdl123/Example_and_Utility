@@ -13,14 +13,21 @@ namespace ManageSQL
 {
     public class MainViewHandler : BasePropertyChange
     {
+        #region Variable
         private string _UserId;
         private string _Password;
         private string _InitialCatalog;
         private string _DataSource;
-        private DB _DB;
-        private eConnectState _Connstate;
         private string _QueryText;
+        private string _TableName;
+        private eConnectState _Connstate;
+        private eExecuteResult _Executeret;
 
+        private DB _DB;
+        private DataView _View;
+        #endregion
+
+        #region Property
         public string UserId
         {
             get => _UserId;
@@ -89,11 +96,27 @@ namespace ManageSQL
                 OnPropertyChanged(nameof(QueryText));
             }
         }
+        public string TableName
+        {
+            get => _TableName;
+            set
+            {
+                if (_TableName == value)
+                    return;
+                _TableName = value;
+                OnPropertyChanged(nameof(TableName));
+            }
+        }
 
+        #region Command
         public ICommand BtnConnect { get; set; }
         public ICommand BtnQueryExecute { get; set; }
         public ICommand BtnGetTable { get; set; }
 
+        #endregion
+        #endregion
+
+        #region Constructor
         public MainViewHandler()
         {
             _DB = new DB();
@@ -106,24 +129,52 @@ namespace ManageSQL
             _DataSource = "localhost";
             _InitialCatalog = "TestDB";
             _QueryText = "Query문을 입력해주세요";
-
+            ConnState = eConnectState.DisConnect;
         }
 
+        #endregion
 
-        public DataTable datatable { get; set; }
+        public DataView View
+        {
+            get
+            {
+                if (_View != null)
+                    return _View;
+                return null ;
+            }
+
+            set
+            {
+                if (_View == null)
+                {
+                    QueryText = "Table명이 잘못되었습니다";
+                    return;
+                }
+                _View = value;
+                OnPropertyChanged(nameof(View));
+            }
+        }
                 
         private void GetTable()
         {
-            //_DB.GetColumnName();
-            int columnCount = _DB.GetColumnCount();
-
-            datatable = _DB.GetTable();
-
+            if (ConnState == eConnectState.DisConnect)
+            {
+                QueryText = "DB와 연결이 되어있지 않습니다.";
+                return;
+            }
+            View = _DB.GetDataViewTable(TableName);
         }
 
         private void ExecuteQuery()
         {
-            _DB.Execute(_QueryText);
+            if (ConnState == eConnectState.DisConnect)
+            {
+                QueryText = "DB와 연결이 되어있지 않습니다.";
+                return;
+            }
+            _Executeret =_DB.Execute(_QueryText);
+            if (_Executeret != eExecuteResult.Sucess)
+                QueryText = "쿼리문을 수정해주세요";
         }
 
         private void DBConnectClick()

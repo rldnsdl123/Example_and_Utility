@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ManageSQL
 {
-    public enum eConnectState
+    public enum eExecuteResult
     {
-        Connect =1,
-        DisConnect=2,
+        Sucess=0,
+        QueryError=1,
     }
 }
