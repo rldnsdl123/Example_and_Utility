@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ManageSQL"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="400">
+        
+        Title="DB" Height="580" Width="400">
     <Window.Resources>
         <ResourceDictionary>
             <Style x:Key="LabelStyle" TargetType="{x:Type Label}">
@@ -32,7 +33,8 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="200"/>
-            <RowDefinition Height="150"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="220"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
@@ -81,7 +83,17 @@
                      />
         </StackPanel>
 
-        <TabControl Grid.Row="1" Grid.ColumnSpan="2" Margin="26 0 26 0">
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                    Margin="26 0 0 0" Orientation="Horizontal"
+                    >
+            <RadioButton GroupName="Query" Content="CREATE" Margin="0 0 10 0" IsChecked="{Binding CreateCheck}"/>
+            <RadioButton GroupName="Query" Content="DELETE" Margin="0 0 10 0" IsChecked="{Binding DeleteCheck}"/>
+            <RadioButton GroupName="Query" Content="INSERT" Margin="0 0 10 0" IsChecked="{Binding InsertCheck}"/>
+            <RadioButton GroupName="Query" Content="UPDATE" Margin="0 0 10 0" IsChecked="{Binding UpdateCheck}"/>
+        </StackPanel>
+
+
+        <TabControl Grid.Row="2" Grid.ColumnSpan="2" Margin="26 0 26 0">
             <TabItem Header="Query">
                 <TextBox Grid.Row="1" Grid.ColumnSpan="2" BorderBrush="black"
                          AcceptsTab="True" AcceptsReturn="True" TextWrapping="WrapWithOverflow"
@@ -94,7 +106,7 @@
             </TabItem>
         </TabControl>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="2" Margin="26 0 25 0">
+        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.ColumnSpan="2" Margin="26 0 25 0">
             <Button Width="70" Height="50" VerticalAlignment="Center"
                     Command="{Binding BtnConnect}"
                     >

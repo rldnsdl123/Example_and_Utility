@@ -20,6 +20,11 @@ namespace ManageSQL
         private string _DataSource;
         private string _QueryText;
         private string _TableName;
+        private bool _CreateCheck;
+        private bool _DeleteCheck;
+        private bool _InsertCheck;
+        private bool _UpdateCheck;
+
         private eConnectState _Connstate;
         private eExecuteResult _Executeret;
 
@@ -107,7 +112,62 @@ namespace ManageSQL
                 OnPropertyChanged(nameof(TableName));
             }
         }
+        public bool CreateCheck
+        {
+            get => _CreateCheck;
+            set
+            {
+                if (_CreateCheck == value)
+                    return;
+                _CreateCheck = value;
+                OnPropertyChanged(nameof(CreateCheck));
+                if (value == true&&ConnState==eConnectState.Connect)
+                    QueryText = "CREATE";
 
+            }
+        }
+        public bool DeleteCheck
+        {
+            get => _DeleteCheck;
+            set
+            {
+                if (_DeleteCheck == value)
+                    return;
+                _DeleteCheck = value;
+                OnPropertyChanged(nameof(DeleteCheck));
+                if (value == true && ConnState == eConnectState.Connect)
+                    QueryText = "DELETE";
+
+            }
+        }
+        public bool InsertCheck
+        {
+            get => _InsertCheck;
+            set
+            {
+                if (_InsertCheck == value)
+                    return;
+                _InsertCheck = value;
+                OnPropertyChanged(nameof(InsertCheck));
+                if (value == true && ConnState == eConnectState.Connect)
+                    QueryText = "INSERT";
+
+            }
+        }
+        public bool UpdateCheck
+        {
+            get => _UpdateCheck;
+            set
+            {
+                if (_UpdateCheck == value)
+                    return;
+                _UpdateCheck = value;
+                OnPropertyChanged(nameof(UpdateCheck));
+                if (value == true && ConnState == eConnectState.Connect)
+                    QueryText = "UPDATE";
+
+            }
+        }
         #region Command
         public ICommand BtnConnect { get; set; }
         public ICommand BtnQueryExecute { get; set; }
@@ -118,6 +178,11 @@ namespace ManageSQL
 
         #region Constructor
         public MainViewHandler()
+        {
+            Initialize();
+        }
+
+        private void Initialize()
         {
             _DB = new DB();
             BtnConnect = new RelayCommand(DBConnectClick);
@@ -202,7 +267,7 @@ namespace ManageSQL
             else
             {
                 ConnState = _DB.Connect(_UserId, _Password, InitialCatalog, _DataSource);
-                QueryText = "쿼리문을 입력해주세요";
+                CreateCheck = true;
             }
         }
     }
