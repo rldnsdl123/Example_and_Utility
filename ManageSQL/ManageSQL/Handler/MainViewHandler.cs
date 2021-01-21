@@ -122,7 +122,7 @@ namespace ManageSQL
                 _CreateCheck = value;
                 OnPropertyChanged(nameof(CreateCheck));
                 if (value == true&&ConnState==eConnectState.Connect)
-                    QueryText = "CREATE";
+                    QueryText = "CREATE TABLE [테이블명] (조건~~)";
 
             }
         }
@@ -136,7 +136,7 @@ namespace ManageSQL
                 _DeleteCheck = value;
                 OnPropertyChanged(nameof(DeleteCheck));
                 if (value == true && ConnState == eConnectState.Connect)
-                    QueryText = "DELETE";
+                    QueryText = "DELETE FROM [테이블명]";
 
             }
         }
@@ -150,7 +150,7 @@ namespace ManageSQL
                 _InsertCheck = value;
                 OnPropertyChanged(nameof(InsertCheck));
                 if (value == true && ConnState == eConnectState.Connect)
-                    QueryText = "INSERT";
+                    QueryText = "INSERT INTO [테이블명] VALUES(~~)";
 
             }
         }
@@ -164,7 +164,7 @@ namespace ManageSQL
                 _UpdateCheck = value;
                 OnPropertyChanged(nameof(UpdateCheck));
                 if (value == true && ConnState == eConnectState.Connect)
-                    QueryText = "UPDATE";
+                    QueryText = "UPDATE [테이블명] SET [COL=VALUE...]";
 
             }
         }

@@ -133,9 +133,15 @@ namespace ManageSQL
             {
                 dt.Columns.Add(GetColumnName(tbName)[i]);
             }
-
-            SqlDataAdapter adapt = new SqlDataAdapter(qry, _Conn);
-            adapt.Fill(dt);
+            try
+            {
+                SqlDataAdapter adapt = new SqlDataAdapter(qry, _Conn);
+                adapt.Fill(dt);
+            }
+            catch
+            {
+                return null;
+            }
 
             return dt.AsDataView();
         }
