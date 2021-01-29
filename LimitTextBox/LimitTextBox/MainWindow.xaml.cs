@@ -20,15 +20,54 @@ namespace LimitTextBox
     /// </summary>
     public partial class MainWindow : Window
     {
+        StringCheck TextCheck;
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = new MainViewModel();
+
+            TextCheck = new StringCheck();
+            this.DataContext = TextCheck;
+            TextCheck.PropertyChanged += TextCheck_PropertyChanged;
+
+            //MainViewModel vm = new MainViewModel();
+            //this.DataContext = vm;
+            //vm.PropertyChanged += Vm_PropertyChanged;
         }
+
+        private void TextCheck_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            var obj = sender as StringCheck;
+            switch(e.PropertyName)
+            {
+                case "ImpossibleText":
+                    {
+                        MessageBox.Show(string.Format("{0} 사용할 수 없습니다", obj.ImpossibleText));
+                    }
+                    break;
+            }
+        }
+
+        //private void Vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        //{
+        //    var obj = sender as MainViewModel;
+        //    switch(e.PropertyName)
+        //    {
+        //        case "Box":
+        //            {
+        //            }
+        //            break;
+
+        //        case "ImpossibleText":
+        //            {
+        //                MessageBox.Show(string.Format("{0} 사용할 수 없습니다", obj.ImpossibleText));
+        //            }
+        //            break;
+        //    }
+        //}
 
         private void StringCheck_Click(object sender, RoutedEventArgs e)
         {
-
+            TxtBox.Text = TextCheck.CheckString(TxtBox.Text);
         }
     }
 }

@@ -17,6 +17,8 @@ namespace LimitTextBox
             PropertyChanged(this, new PropertyChangedEventArgs(name));
         }
         private string _Box;
+        private string _ImpossibleText;
+
         public string Box
         {
             get => _Box;
@@ -30,14 +32,19 @@ namespace LimitTextBox
                 OnPropertyChanged(nameof(Box));
             }
         }
-
+        public string ImpossibleText
+        {
+            get => _ImpossibleText;
+            set
+            {
+                _ImpossibleText = value;
+                OnPropertyChanged(nameof(ImpossibleText));
+            }
+        }
+        public List<string> LimitText;
         public MainViewModel()
         {
-        }
-
-        private string CheckString(string msg)
-        {
-            List<string> LimitText = new List<string>
+            LimitText = new List<string>
             {
                 "<",
                 ">",
@@ -45,13 +52,16 @@ namespace LimitTextBox
                 "\"",
                 "&",
             };
+        }
 
+        private string CheckString(string msg)
+        {
             foreach(string entity in LimitText)
             {
                 if (msg.Contains(entity))
                 {
                     msg = msg.Replace(entity, "");
-                    System.Diagnostics.Debug.WriteLine(entity + "삭제");
+                    ImpossibleText = entity;
                 }
             }
 
