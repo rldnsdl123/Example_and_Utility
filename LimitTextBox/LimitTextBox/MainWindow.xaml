@@ -17,7 +17,7 @@
                  BorderThickness="1"
                  TextWrapping="Wrap"
                  x:Name="TxtBox"
-                 Text="{Binding BindingText, UpdateSourceTrigger=PropertyChanged}"
+                 Text="{Binding RealTimeInputText, UpdateSourceTrigger=PropertyChanged}"
                  />
         <!-- Text="{Binding BindingText, UpdateSourceTrigger=PropertyChanged}"-->
 

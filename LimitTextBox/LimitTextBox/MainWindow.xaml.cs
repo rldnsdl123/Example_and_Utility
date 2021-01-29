@@ -28,42 +28,23 @@ namespace LimitTextBox
             TextCheck = new StringCheck();
             this.DataContext = TextCheck;
             TextCheck.PropertyChanged += TextCheck_PropertyChanged;
-
-            //MainViewModel vm = new MainViewModel();
-            //this.DataContext = vm;
-            //vm.PropertyChanged += Vm_PropertyChanged;
         }
 
         private void TextCheck_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            var obj = sender as StringCheck;
+            var result = sender as StringCheck;
             switch(e.PropertyName)
             {
                 case "ImpossibleText":
                     {
-                        MessageBox.Show(string.Format("{0} 사용할 수 없습니다", obj.ImpossibleText));
+                        if(string.IsNullOrEmpty(result.ImpossibleText))
+                            MessageBox.Show(string.Format("문제가 없습니다."));
+                        else
+                            MessageBox.Show(string.Format("{0} 사용할 수 없습니다", result.ImpossibleText));
                     }
                     break;
             }
         }
-
-        //private void Vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        //{
-        //    var obj = sender as MainViewModel;
-        //    switch(e.PropertyName)
-        //    {
-        //        case "Box":
-        //            {
-        //            }
-        //            break;
-
-        //        case "ImpossibleText":
-        //            {
-        //                MessageBox.Show(string.Format("{0} 사용할 수 없습니다", obj.ImpossibleText));
-        //            }
-        //            break;
-        //    }
-        //}
 
         private void StringCheck_Click(object sender, RoutedEventArgs e)
         {

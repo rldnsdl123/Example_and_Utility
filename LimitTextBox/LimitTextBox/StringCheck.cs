@@ -11,7 +11,7 @@ namespace LimitTextBox
     public class StringCheck :INotifyPropertyChanged
     {
         private string _InputText;
-        private string _BindingText;
+        private string _RealTimeInputText;
         private string _ResultText;
         private string _ImpossibleText;
 
@@ -23,16 +23,16 @@ namespace LimitTextBox
             PropertyChanged(this, new PropertyChangedEventArgs(name));
         }
 
-        public string BindingText
+        public string RealTimeInputText
         {
-            get => _BindingText;
+            get => _RealTimeInputText;
             set
             {
                 value = RealTimeCheckString(value); 
-                if (_BindingText == value)
+                if (_RealTimeInputText == value)
                     return;
-                _BindingText = value;
-                OnPropertyChanged(nameof(BindingText));
+                _RealTimeInputText = value;
+                OnPropertyChanged(nameof(RealTimeInputText));
             }
         }
 
@@ -102,24 +102,25 @@ namespace LimitTextBox
                 }
             }
             _ResultText = _InputText;
-            if (!string.IsNullOrEmpty(wrongText)) 
-                ImpossibleText = wrongText;
+            ImpossibleText = wrongText;
 
-            return _ResultText;
+            return ResultText;
         }
 
         private string RealTimeCheckString(string msg)
         {
+            _InputText = msg;
             foreach (string entity in LimitText)
             {
-                if (msg.Contains(entity))
+                if (_InputText.Contains(entity))
                 {
-                    msg = msg.Replace(entity, "");
+                    _InputText = _InputText.Replace(entity, "");
                     ImpossibleText = entity;
                 }
             }
+            _ResultText = _InputText;
 
-            return msg;
+            return _ResultText;
         }
     }
 }
