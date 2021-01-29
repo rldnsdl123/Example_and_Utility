@@ -1,0 +1,28 @@
+﻿<Window x:Class="LimitTextBox.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LimitTextBox"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="500" Width="400">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="350"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <TextBox Width="350" Height="300"
+                 BorderBrush="Black"
+                 BorderThickness="1"
+                 TextWrapping="Wrap"
+                 x:Name="TxtBox"
+                 Text="{Binding Box, UpdateSourceTrigger=PropertyChanged}"
+                 />
+
+        <Button Grid.Row="1" Margin="10" Content="string Check"
+                x:Name="StringCheck"
+                Click="StringCheck_Click"
+                />
+    </Grid>
+</Window>
