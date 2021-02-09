@@ -1,0 +1,52 @@
+﻿<Window x:Class="RWxml.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RWxml"
+        mc:Ignorable="d"
+        Title="XMLeditor" Height="440" Width="820">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="300"></RowDefinition>
+            <RowDefinition Height="100"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        
+        <TextBox BorderBrush="Black" BorderThickness="2" Margin="10"
+                 Width="780" Height="280" Grid.ColumnSpan="2"
+                 FontSize="20" FontWeight="Bold" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap"
+                 VerticalScrollBarVisibility="Auto" MinWidth="10" HorizontalScrollBarVisibility="Auto"
+                 PreviewTextInput="TextBox_PreviewTextInput"
+                 x:Name="txtSolution"
+                 >
+        </TextBox>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Grid.ColumnSpan="2"
+                    HorizontalAlignment="Center">
+        <Button  Grid.Column="1" Margin="10" Width="200" Height="70"
+                 Content="Save" FontSize="30" FontWeight="Bold" 
+                 x:Name="BtnSave"
+                 Click="BtnSave_Click"
+                 ToolTip="XML파일로 저장"
+                 />
+            <Button  Grid.Column="1" Grid.Row="1" Margin="10" Width="200" Height="70"
+                 Content="Load" FontSize="30" FontWeight="Bold"
+                 x:Name="BtnRead"
+                 Click="BtnRead_Click"
+                 ToolTip="XML파일 읽어오기"
+                 />
+            <Button  Grid.Column="1" Grid.Row="2" Margin="10" Width="200" Height="70"
+                 Content="Clear" FontSize="30" FontWeight="Bold"
+                 x:Name="BtnClear"
+                 Click="BtnClear_Click"
+                 ToolTip="텍스트 박스 초기화"
+                 />
+        </StackPanel>
+    </Grid>
+</Window>
+
+    
